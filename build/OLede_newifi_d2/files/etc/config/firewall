@@ -1,0 +1,388 @@
+
+config defaults
+	option syn_flood '1'
+	option input 'ACCEPT'
+	option output 'ACCEPT'
+	option forward 'REJECT'
+	option fullcone '1'
+	option drop_invalid '1'
+	option flow_offloading '0'
+
+config zone
+	option name 'lan'
+	option input 'ACCEPT'
+	option output 'ACCEPT'
+	option forward 'ACCEPT'
+	option network 'lan'
+
+config zone
+	option name 'wan'
+	option input 'REJECT'
+	option output 'ACCEPT'
+	option forward 'REJECT'
+	option masq '1'
+	option mtu_fix '1'
+	option network 'wan'
+
+config rule
+	option name 'Allow-DHCP-Renew'
+	option src 'wan'
+	option proto 'udp'
+	option dest_port '68'
+	option target 'ACCEPT'
+	option family 'ipv4'
+
+config rule
+	option name 'Allow-Ping'
+	option src 'wan'
+	option proto 'icmp'
+	option icmp_type 'echo-request'
+	option family 'ipv4'
+	option target 'ACCEPT'
+
+config rule
+	option name 'Allow-IGMP'
+	option src 'wan'
+	option proto 'igmp'
+	option family 'ipv4'
+	option target 'ACCEPT'
+
+config rule
+	option name 'Allow-DHCPv6'
+	option src 'wan'
+	option proto 'udp'
+	option src_ip 'fc00::/6'
+	option dest_ip 'fc00::/6'
+	option dest_port '546'
+	option family 'ipv6'
+	option target 'ACCEPT'
+
+config rule
+	option name 'Allow-MLD'
+	option src 'wan'
+	option proto 'icmp'
+	option src_ip 'fe80::/10'
+	list icmp_type '130/0'
+	list icmp_type '131/0'
+	list icmp_type '132/0'
+	list icmp_type '143/0'
+	option family 'ipv6'
+	option target 'ACCEPT'
+
+config rule
+	option name 'Allow-ICMPv6-Input'
+	option src 'wan'
+	option proto 'icmp'
+	list icmp_type 'echo-request'
+	list icmp_type 'echo-reply'
+	list icmp_type 'destination-unreachable'
+	list icmp_type 'packet-too-big'
+	list icmp_type 'time-exceeded'
+	list icmp_type 'bad-header'
+	list icmp_type 'unknown-header-type'
+	list icmp_type 'router-solicitation'
+	list icmp_type 'neighbour-solicitation'
+	list icmp_type 'router-advertisement'
+	list icmp_type 'neighbour-advertisement'
+	option limit '1000/sec'
+	option family 'ipv6'
+	option target 'ACCEPT'
+
+config rule
+	option name 'Allow-ICMPv6-Forward'
+	option src 'wan'
+	option dest '*'
+	option proto 'icmp'
+	list icmp_type 'echo-request'
+	list icmp_type 'echo-reply'
+	list icmp_type 'destination-unreachable'
+	list icmp_type 'packet-too-big'
+	list icmp_type 'time-exceeded'
+	list icmp_type 'bad-header'
+	list icmp_type 'unknown-header-type'
+	option limit '1000/sec'
+	option family 'ipv6'
+	option target 'ACCEPT'
+
+config rule
+	option src 'wan'
+	option target 'ACCEPT'
+	option name 'sever-ovpn'
+	option family 'ipv6'
+	option proto 'tcp udp'
+	option dest_port '3194'
+
+config rule
+	option name 'Allow-ISAKMP'
+	option src 'wan'
+	option dest 'lan'
+	option dest_port '500'
+	option proto 'udp'
+	option target 'ACCEPT'
+
+config include
+	option path '/etc/firewall.user'
+
+config forwarding
+	option dest 'vpn'
+	option src 'lan'
+
+config forwarding
+	option dest 'lan'
+	option src 'vpn'
+
+config zone
+	option input 'ACCEPT'
+	option output 'ACCEPT'
+	option name 'wg'
+	option forward 'ACCEPT'
+	option network 'vpn0'
+
+config rule
+	option target 'ACCEPT'
+	option src 'wan'
+	option proto 'tcp udp'
+	option name 'ipv6'
+	option family 'ipv6'
+	option dest '*'
+	option dest_port '6194'
+
+config rule
+	option target 'REJECT'
+	option proto 'all'
+	option start_time '12:30:00'
+	option weekdays 'Sun Mon Tue Wed Thu Fri Sat'
+	option src 'lan'
+	option dest 'wan'
+	option name 'x7-Wifi-aftenoon'
+	option src_mac '78:62:56:2B:5B:8D'
+	option stop_time '15:30:00'
+
+config rule
+	option proto 'tcp udp'
+	option name '65stv'
+	option src_mac '08:BA:5F:AD:8D:DB'
+	option src 'lan'
+	option dest 'wan'
+	option target 'DROP'
+	option weekdays 'Sun Mon Tue Wed Thu Fri Sat'
+	option start_time '09:00:00'
+	option stop_time '19:30:00'
+
+config rule
+	option proto 'tcp udp'
+	option target 'REJECT'
+	option stop_time '23:30:00'
+	option weekdays 'Sun Mon Tue Wed Thu Fri Sat'
+	option src 'lan'
+	option dest 'wan'
+	option name 'x7afternoon'
+	option src_mac '78:62:56:2B:5B:8D'
+	option start_time '21:00:00'
+
+config include 'mia'
+	option type 'script'
+	option path '/etc/mia.include'
+	option reload '1'
+
+config include 'zerotier'
+	option type 'script'
+	option path '/etc/zerotier.start'
+	option reload '1'
+
+config rule 'wireguard'
+	option target 'ACCEPT'
+	option src 'wan'
+	option proto 'tcp udp'
+	option family 'ipv6'
+	option dest_port '19414'
+	option name 'wireguard'
+
+config forwarding 'vpnlan'
+	option src 'vpn'
+	option dest 'lan'
+
+config include 'unblockmusic'
+	option type 'script'
+	option path '/var/etc/unblockmusic.include'
+	option reload '1'
+
+config zone
+	option input 'ACCEPT'
+	option output 'ACCEPT'
+	option forward 'ACCEPT'
+	option network 'vpn_server_tun1'
+	option name 'vpnServer'
+
+config forwarding
+	option dest 'lan'
+	option src 'wg'
+
+config forwarding
+	option dest 'wg'
+	option src 'lan'
+
+config forwarding
+	option src 'lan'
+	option dest 'vpnServer'
+
+config forwarding
+	option src 'vpn'
+	option dest 'vpnServer'
+
+config forwarding
+	option dest 'lan'
+	option src 'vpnServer'
+
+config forwarding
+	option dest 'vpn'
+	option src 'vpnServer'
+
+config rule
+	option proto 'tcp udp'
+	option name '65s-lan-5-6'
+	option src 'lan'
+	option src_mac '08:BA:5F:AD:8D:DB'
+	option dest 'wan'
+	option target 'REJECT'
+	option weekdays 'Fri Sat'
+	option stop_time '23:59:59'
+	option start_time '20:40:00'
+
+config rule
+	option proto 'tcp udp'
+	option name 'daughter-pan'
+	option src 'lan'
+	option src_mac '04:4A:6C:A3:6F:F1'
+	option dest 'wan'
+	option weekdays 'Sun Mon Tue Wed Thu Fri Sat'
+	option target 'REJECT'
+	option start_time '21:55:00'
+	option stop_time '23:59:00'
+
+config rule
+	option proto 'tcp udp'
+	option name 'daughter-afternoon'
+	option src 'lan'
+	option src_mac '04:4A:6C:A3:6F:F1'
+	option dest 'wan'
+	option weekdays 'Sun Mon Tue Wed Thu Fri Sat'
+	option target 'REJECT'
+	option stop_time '13:59:59'
+	option start_time '12:00:00'
+
+config rule
+	option proto 'tcp udp'
+	option name 'ma-rom'
+	option src 'lan'
+	option dest 'wan'
+	option target 'REJECT'
+	option weekdays 'Sun Mon Tue Wed Thu Fri Sat'
+	option stop_time '19:00:00'
+	option src_mac 'BC:25:E0:45:12:D9'
+	option start_time '09:00:00'
+
+config forwarding
+	option dest 'wan'
+	option src 'lan'
+
+config forwarding
+	option dest 'wan'
+	option src 'vpn'
+
+config forwarding
+	option dest 'wan'
+	option src 'vpnServer'
+
+config forwarding
+	option dest 'wan'
+	option src 'wg'
+
+config include 'miniupnpd'
+	option type 'script'
+	option path '/usr/share/miniupnpd/firewall.include'
+	option family 'any'
+	option reload '1'
+
+config include 'adbyby'
+	option type 'script'
+	option path '/var/etc/adbyby.include'
+	option reload '1'
+
+config rule 'adblock'
+	option name 'adblock'
+	option target 'DROP'
+	option src 'wan'
+	option proto 'tcp'
+	option dest_port '8118'
+
+config rule 'kms'
+	option name 'kms'
+	option target 'ACCEPT'
+	option src 'wan'
+	option proto 'tcp'
+	option dest_port '1688'
+
+config include 'shadowsocksr'
+	option type 'script'
+	option path '/var/etc/shadowsocksr.include'
+	option reload '1'
+
+config rule 'openvpn'
+	option name 'openvpn'
+	option target 'ACCEPT'
+	option src 'wan'
+	option proto 'tcp udp'
+	option dest_port '1194'
+
+config zone 'vpn'
+	option name 'vpn'
+	option input 'ACCEPT'
+	option forward 'ACCEPT'
+	option output 'ACCEPT'
+	option masq '1'
+	option network 'vpn0'
+
+config forwarding 'vpntowan'
+	option src 'vpn'
+	option dest 'wan'
+
+config forwarding 'vpntolan'
+	option src 'vpn'
+	option dest 'lan'
+
+config forwarding 'lantovpn'
+	option src 'lan'
+	option dest 'vpn'
+
+config rule
+	option proto 'tcp udp'
+	option name '周六日'
+	option target 'REJECT'
+	option weekdays 'Sun Sat'
+	option start_time '14:00:00'
+	option stop_time '17:00:00'
+	option src 'lan'
+	option src_mac '08:BA:5F:AD:8D:DB'
+	option dest 'wan'
+
+config rule
+	option proto 'tcp udp'
+	option name 'x7'
+	option src 'lan'
+	option dest 'wan'
+	option weekdays 'Sun Mon Tue Wed Thu Fri Sat'
+	option target 'REJECT'
+	option start_time '00:00:00'
+	option stop_time '06:30:00'
+	option src_mac '78:62:56:2B:5B:8D'
+
+config rule
+	option proto 'tcp udp'
+	option name '测试'
+	option src 'lan'
+	option src_mac '04:79:70:28:18:8C'
+	option dest 'wan'
+	option target 'REJECT'
+	option enabled '0'
+

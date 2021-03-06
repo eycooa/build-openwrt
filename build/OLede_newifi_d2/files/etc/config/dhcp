@@ -1,0 +1,148 @@
+
+config dnsmasq
+	option domainneeded '1'
+	option localise_queries '1'
+	option rebind_protection '1'
+	option rebind_localhost '1'
+	option local '/lan/'
+	option domain 'lan'
+	option expandhosts '1'
+	option authoritative '1'
+	option readethers '1'
+	option leasefile '/tmp/dhcp.leases'
+	option resolvfile '/tmp/resolv.conf.d/resolv.conf.auto'
+	option nonwildcard '1'
+	option localservice '1'
+
+config dhcp 'lan'
+	option interface 'lan'
+	option start '100'
+	option limit '150'
+	option leasetime '12h'
+	option ra 'server'
+	option ra_slaac '1'
+	list ra_flags 'managed-config'
+	list ra_flags 'other-config'
+	option dhcpv6 'relay'
+
+config dhcp 'wan'
+	option interface 'wan'
+	option ignore '1'
+
+config odhcpd 'odhcpd'
+	option maindhcp '0'
+	option leasefile '/tmp/hosts/odhcpd'
+	option leasetrigger '/usr/sbin/odhcpd-update'
+	option loglevel '4'
+
+config srvhost
+	option srv '_vlmcs._tcp'
+	option target 'OpenWrt'
+	option port '1688'
+	option class '0'
+	option weight '100'
+
+config host
+	option name 'Unas'
+	option dns '1'
+	option mac '3e:3a:b8:6e:b0:75'
+	option ip '192.168.123.2'
+	option leasetime 'infinite'
+
+config host
+	option name 'pandavan-Y1'
+	option dns '1'
+	option mac '20:76:93:00:67:3c'
+	option ip '192.168.123.3'
+	option leasetime 'infinite'
+
+config host
+	option name 'o-mini'
+	option dns '1'
+	option mac '20:76:93:2a:65:8c'
+	option ip '192.168.8.2'
+
+config host
+	option mac 'BC:25:E0:45:12:D8'
+	option dns '1'
+	option name 'my-rom'
+	option ip '192.168.8.217'
+
+config host
+	option mac '8E:1C:DA:C0:1B:E3'
+	option dns '1'
+	option name 'ma_phone'
+	option ip '192.168.8.101'
+
+config host
+	option mac '40:B0:76:47:76:6F'
+	option name 'Gd_____WIN-GCDQGOOV8QV'
+	option dns '1'
+	option ip '192.168.8.170'
+
+config host
+	option mac 'F8:4D:FC:06:49:37'
+	option name 'camera_out'
+	option dns '1'
+	option ip '192.168.8.151'
+
+config host
+	option mac '04:4A:6C:A3:6F:F1'
+	option name 'Pad_jx'
+	option dns '1'
+	option ip '192.168.8.153'
+
+config host
+	option mac '90:94:97:F4:AA:00'
+	option dns '1'
+	option ip '192.168.8.102'
+	option name 'unname'
+
+config host
+	option name '65s-TV'
+	option dns '1'
+	option mac 'd4:b7:61:99:bd:0b'
+	option ip '192.168.8.185'
+
+config host
+	option dns '1'
+	option mac '04:79:70:28:18:8c'
+	option ip '192.168.8.105'
+	option name 'father_phone'
+
+config host
+	option dns '1'
+	option mac 'b8:de:5e:97:98:80'
+	option name 'jx_watch'
+	option ip '192.168.8.103'
+
+config host
+	option name 'wife_phone'
+	option dns '1'
+	option mac 'f0:e4:a2:24:77:b7'
+	option ip '192.168.8.154'
+
+config domain
+	option name 'extshort.weixin.qq.com'
+	option ip '127.0.0.1'
+	option comments '300大作战'
+
+config host
+	option dns '1'
+	option mac 'bc:25:e0:45:12:d9'
+	option name 'mam_room'
+	option ip '192.168.8.216'
+
+config host
+	option name '65s_lan'
+	option dns '1'
+	option mac '08:ba:5f:ad:8d:db'
+	option ip '192.168.8.218'
+
+config host
+	option dns '1'
+	option mac '00:e0:4c:99:4a:1f'
+	option name 'camera_in'
+	option ip '192.168.8.152'
+	option leasetime 'infinite'
+

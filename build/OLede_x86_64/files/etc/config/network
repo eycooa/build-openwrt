@@ -1,0 +1,48 @@
+
+config interface 'loopback'
+	option ifname 'lo'
+	option proto 'static'
+	option ipaddr '127.0.0.1'
+	option netmask '255.0.0.0'
+
+config globals 'globals'
+	option packet_steering '1'
+
+config interface 'lan'
+	option type 'bridge'
+	option ifname 'eth0'
+	option proto 'static'
+	option netmask '255.255.255.0'
+	option ip6assign '60'
+	option ipaddr '192.168.123.1'
+
+config interface 'wan'
+	option ifname 'eth1'
+	option _orig_ifname 'eth1'
+	option _orig_bridge 'false'
+	option proto 'pppoe'
+	option username '13316583867@163.gd'
+	option password '99363984'
+	option ipv6 'auto'
+	option keepalive '0'
+
+config route
+	option interface 'lan'
+	option target '192.168.8.0'
+	option gateway '192.168.123.2'
+	option netmask '255.255.255.0'
+
+config route
+	option interface 'lan'
+	option target '10.8.8.0'
+	option netmask '255.255.255.0'
+	option gateway '192.168.123.2'
+
+config interface 'vpn0'
+	option ifname 'tun0'
+	option proto 'none'
+
+config interface 'vpn_server'
+	option proto 'none'
+	option ifname 'tun1'
+

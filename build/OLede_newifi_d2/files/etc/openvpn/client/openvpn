@@ -1,0 +1,5 @@
+
+config openvpn 'client_nc'
+	option config '/etc/openvpn/client/admin_nc.conf'
+	option enabled '1'
+

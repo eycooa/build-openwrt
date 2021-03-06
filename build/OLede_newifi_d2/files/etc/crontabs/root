@@ -1,0 +1,6 @@
+#0 4 * * * ifup wan
+0 4 * * 1,4 sh /etc/config/sh/re.sh
+0 4 * * * /etc/init.d/firewall restart
+#*/1 * * * * sh /etc/config/sh/ping.sh
+*/5 * * * * sh /etc/config/sh/sc.he.sh
+0 6 * * * /usr/share/adbyby/adblock.sh > /tmp/adupdate.log 2>&1

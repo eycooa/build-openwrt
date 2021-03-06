@@ -1,0 +1,84 @@
+
+config interface 'loopback'
+	option ifname 'lo'
+	option proto 'static'
+	option ipaddr '127.0.0.1'
+	option netmask '255.0.0.0'
+
+config interface 'lan'
+	option type 'bridge'
+	option proto 'static'
+	option netmask '255.255.255.0'
+	option ip6assign '60'
+	option ipaddr '192.168.8.1'
+	option ifname 'eth0.1 ra0 rai0 apcli0 apcli1 apclii0'
+
+config device 'wan_dev'
+	option name 'eth0.2'
+	option macaddr '20:76:93:48:3b:01'
+
+config interface 'wan'
+	option ifname 'eth0.2'
+	option _orig_ifname 'eth0.2'
+	option _orig_bridge 'false'
+	option proto 'pppoe'
+	option username '13696227799'
+	option password '227799'
+	option ipv6 'auto'
+	option keepalive '0'
+
+config switch
+	option name 'switch0'
+	option reset '1'
+	option enable_vlan '1'
+
+config switch_vlan
+	option device 'switch0'
+	option vlan '1'
+	option ports '0 1 2 3 6t'
+
+config switch_vlan
+	option device 'switch0'
+	option vlan '2'
+	option ports '4 6t'
+
+config route
+	option gateway '10.8.8.3'
+	option interface 'vpn0'
+	option target '192.168.3.0'
+	option netmask '255.255.255.0'
+
+config interface 'wg'
+	option proto 'wireguard'
+	option private_key 'qHGJlOjT0cPha4KjRnxuSpq9xt5ivS7DDLt78qKuyUM='
+	option listen_port '19414'
+	option route_allowed_ips '1'
+	list addresses '10.10.10.1/24'
+
+config wireguard_wg
+	option public_key 'rZpmzNRHTrft01jAIGdAKef6VBuxRL/1JKfXy/v2XXY='
+	option persistent_keepalive '25'
+	list allowed_ips '10.10.10.2/32'
+
+config wireguard_wg
+	option public_key '4fn5QPWLOnDlPI7qC2EEZtQiOphitWF6lpzer8mLmQ8='
+	option persistent_keepalive '25'
+	list allowed_ips '10.10.10.3/32'
+
+config route
+	option interface 'vpn0'
+	option target '192.168.43.0'
+	option netmask '255.255.255.0'
+	option gateway '10.8.8.2'
+
+config interface 'vpn_server_tun1'
+	option proto 'none'
+	option ifname 'tun1'
+
+config globals 'globals'
+	option packet_steering '1'
+
+config interface 'vpn0'
+	option ifname 'tun0'
+	option proto 'none'
+

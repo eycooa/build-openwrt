@@ -1,0 +1,18 @@
+
+config queue 'eth1'
+	option linklayer 'none'
+	option enabled '1'
+	option upload '37000'
+	option debug_logging '0'
+	option verbosity '5'
+	option script 'layer_cake.qos'
+	option qdisc_advanced '1'
+	option squash_dscp '1'
+	option squash_ingress '1'
+	option ingress_ecn 'ECN'
+	option egress_ecn 'NOECN'
+	option qdisc_really_really_advanced '1'
+	option interface 'pppoe-wan'
+	option qdisc 'cake'
+	option download '190000'
+

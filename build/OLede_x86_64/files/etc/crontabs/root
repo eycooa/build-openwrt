@@ -1,0 +1,8 @@
+#0 4 * * * ifup wan
+0 4 * * * /etc/init.d/firewall restart
+*/5 * * * * sh /etc/config/sh/dynv6.sh
+*/1 * * * * sh /etc/config/sh/ping.sh
+0 4 * * 1,4 sh /etc/config/sh/re.sh
+*/5 * * * * sh /etc/config/sh/www.he.sh
+0 6 * * * /usr/share/adbyby/adblock.sh > /tmp/adupdate.log 2>&1
+0 3 * * * /usr/share/shadowsocksr/ssrplusupdate.sh >>/tmp/ssrplus.log 2>&1

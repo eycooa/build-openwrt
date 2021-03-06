@@ -1,0 +1,18 @@
+
+config adbyby
+	option daemon '2'
+	option lan_mode '0'
+	option cron_mode '1'
+	option block_ios '0'
+	option wan_mode '1'
+	option mem_mode '1'
+	option update_source '1'
+	option enable '1'
+	option block_douyin '0'
+	option block_cnshort '0'
+	list subscribe_url 'http://sub.adtchrome.com/adt-chinalist-easylist.txt'
+	list subscribe_url 'https://gitee.com/xinggsf/Adblock-Rule/raw/master/rule.txt'
+	list subscribe_url 'https://gitee.com/xinggsf/Adblock-Rule/raw/master/mv.txt'
+	list subscribe_url 'https://gitee.com/halflife/list/raw/master/ad.txt'
+	list subscribe_url '#https://www.xbext.com/docs/bookmark/the-most-popular-ad-blocking-rules/'
+
