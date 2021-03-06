@@ -1,0 +1,1 @@
+curl -6 "https://sc.etceye.top:zLTfVHw4Dv9etMDT@dyn.dns.he.net/nic/update?hostname=sc.etceye.top" > /etc/config/sh/sc.he.log
